@@ -24,7 +24,7 @@ class Deposit(Transaction):
         self.amount = amount
     
     def get_transaction_description(self):
-        return f'Teller {self.get_teller_id()} deposited {self._amount} to account {self.get_customer_id()}' 
+        return f'Teller {self.get_teller_id()} deposited {self.amount} to account {self.get_customer_id()}' 
 
 class Withdrawal(Transaction):
     def __init__(self, customerId, tellerId, amount):
@@ -32,7 +32,7 @@ class Withdrawal(Transaction):
         self.amount = amount
 
     def get_transaction_description(self):
-        return f'Teller {self.get_teller_id()} withdrew {self._amount} from account {self.get_customer_id()}'
+        return f'Teller {self.get_teller_id()} withdrew {self.amount} from account {self.get_customer_id()}'
     
 class OpenAccount(Transaction):
     def __init__(self, customerId, tellerId):
@@ -81,7 +81,7 @@ class BankSystem:
     
     def open_account(self, customer_name, teller_id):
         # Create Account
-        customerId = len(self.getAccounts())
+        customerId = len(self.get_accounts())
         account = BankAccount(customerId, customer_name, 0)
         self.accounts.append(account)
 
@@ -115,6 +115,7 @@ class BankBranch:
         self.address = address
         self.cash_on_hand = cash_on_hand
         self.bank_system = bank_system
+        self.tellers = []
 
     def add_teller(self, teller):
         self.tellers.append(teller)
