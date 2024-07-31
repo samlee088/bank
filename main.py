@@ -152,7 +152,56 @@ class BankBranch:
     def provide_cash(self, amount):
         self.cash_on_hand += amount
 
+class Bank:
+    def __init__(self, branches, bank_system, total_cash):
+        self.branches = branches
+        self.bank_system = bank_system
+        self.total_cash = total_cash
 
+    def add_branch(self, address, initial_funds):
+        branch = BankBranch(address, initial_funds, self.bank_system)
+        self.branches.append(branch)
+        return branch
+    
+    def collect_cash(self, ratio):
+        for branch in self.branches:
+            cash_collected = branch.collect_cash(ratio)
+            self.total_cash += cash_collected
 
+    def print_transactions(self):
+        for transaction in self.bank_system.get_transactions():
+            print(transaction.get_transaction_description())
+
+bankSystem = BankSystem([], [])
+bank = Bank([], bankSystem, 10000)
+
+branch1 = bank.add_branch('123 Main St', 1000)
+branch2 = bank.add_branch('456 Elm St', 1000)
+
+branch1.add_teller(BankTeller(1))
+branch1.add_teller(BankTeller(2))
+branch2.add_teller(BankTeller(3))
+branch2.add_teller(BankTeller(4))
+
+customerId1 = branch1.open_account('John Doe')
+customerId2 = branch1.open_account('Bob Smith')
+customerId3 = branch2.open_account('Jane Doe')
+
+branch1.deposit(customerId1, 100)
+branch1.deposit(customerId2, 200)
+branch2.deposit(customerId3, 300)
+
+branch1.withdraw(customerId1, 50)
+""" Possible Output:
+    Teller 1 opened account 0
+    Teller 2 opened account 1
+    Teller 3 opened account 2
+    Teller 1 deposited 100 to account 0
+    Teller 2 deposited 200 to account 1
+    Teller 4 deposited 300 to account 2
+    Teller 2 withdrew 50 from account 0
+"""
+
+bank.print_transactions()
 
 
