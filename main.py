@@ -40,3 +40,12 @@ class OpenAccount(Transaction):
 
     def get_transaction_description(self):
         return f'Teller {self.get_teller_id()} opened account {self.get_customer_id()}'
+        
+
+class BankTeller:
+    def __init__(self, id):
+        self.id = id
+
+    def get_id(self):
+        return self.id
+    
