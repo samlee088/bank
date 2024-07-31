@@ -49,3 +49,19 @@ class BankTeller:
     def get_id(self):
         return self.id
     
+class BankAccount:
+    def __init__(self, customerId, name, balance):
+        self.customerId = customerId
+        self.name = name
+        self.balance = balance
+    
+    def get_balance(self):
+        
+        return self.balance
+
+    def deposit(self, amount):
+        self.balance += amount
+
+    def withdraw(self, amount):
+        self.balance -= amount
+    
