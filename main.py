@@ -56,7 +56,7 @@ class BankAccount:
         self.balance = balance
     
     def get_balance(self):
-        
+
         return self.balance
 
     def deposit(self, amount):
@@ -64,4 +64,44 @@ class BankAccount:
 
     def withdraw(self, amount):
         self.balance -= amount
+
+class BankSystem:
+    def __init__(self, accounts, transactions):
+        self.accounts = accounts
+        self.transactions = transactions
+
+    def get_account(self, customerId):
+        return self.accounts[customerId]
     
+    def get_accounts(self):
+        return self.accounts
+    
+    def get_transactions(self):
+        return self.transactions
+    
+    def open_account(self, customer_name, teller_id):
+        # Create Account
+        customerId = len(self.getAccounts())
+        account = BankAccount(customerId, customer_name, 0)
+        self.accounts.append(account)
+
+        # Log Transaction
+        transaction = OpenAccount(customerId, teller_id)
+        self.transactions.append(transaction)
+        return customerId
+    
+    def deposit(self, customer_id, teller_id, amount):
+        account = self.get_account(customer_id)
+        account.deposit(amount)
+
+        transaction = Deposit(customer_id, teller_id, amount)
+        self.transactions.append(transaction)
+
+    def withdraw(self, customer_id, teller_id, amount):
+        if amount > self.get_account(customer_id).get_balance():
+            raise Exception("Insufficient funds")
+        account = self.get_account(customer_id)
+        account.withdraw(amount)
+
+        transaction = Withdrawal(customer_id, teller_id, amount)
+        self.transactions.append(transaction)
