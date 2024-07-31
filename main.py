@@ -105,3 +105,54 @@ class BankSystem:
 
         transaction = Withdrawal(customer_id, teller_id, amount)
         self.transactions.append(transaction)
+
+
+
+import random
+
+class BankBranch:
+    def __init__(self, address, cash_on_hand, bank_system):
+        self.address = address
+        self.cash_on_hand = cash_on_hand
+        self.bank_system = bank_system
+
+    def add_teller(self, teller):
+        self.tellers.append(teller)
+
+    def get_available_teller(self):
+        index = round(random.random() * (len(self.tellers) -1))
+        return self.tellers[index].get_id()
+    
+    def open_account(self, customer_name):
+        if not self.tellers:
+            raise ValueError("Branch does not have any tellers")
+        teller_id = self.get_available_teller()
+        return self.bank_system.open_account(customer_name, teller_id)
+
+    def deposit(self, customer_id, amount):
+        if not self.tellers:
+            raise ValueError("Brand does not have any tellers")
+        teller_id = self.get_available_teller()
+        self.bank_system.deposit(customer_id, teller_id, amount)
+
+    def withdraw(self, customer_id, amount):
+        if amount > self.cash_on_hand:
+            raise ValueError('Branch does not have enough cash')
+        if not self.tellers:
+            raise ValueError('Branch does not have any tellers')
+        self.cash_on_hand += amount
+        teller_id = self.get_available_teller()
+        self.bank_system.withdraw(customer_id, teller_id, amount)
+
+    def collect_cash(self, ratio):
+        cash_to_collect = round(self.cash_on_hand * ratio)
+        self.cash_on_hand -= cash_to_collect
+        return cash_to_collect
+    
+    def provide_cash(self, amount):
+        self.cash_on_hand += amount
+
+
+
+
+
